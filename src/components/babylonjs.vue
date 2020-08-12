@@ -61,13 +61,10 @@ export default {
 
 					// create a built-in "sphere" shape; its constructor takes 6 params: name, segment, diameter, scene, updatable, sideOrientation 
 					// var sphere = BABYLON.Mesh.CreateSphere('sphere1', 16, 2, scene);
-
 					// // move the sphere upward 1/2 of its height
 					// sphere.position.y = 1;
-
 					// // create a built-in "ground" shape;
 					// var ground = BABYLON.Mesh.CreateGround('ground1', 6, 6, 2, scene);
-
 					// return the created scene
 					return scene;
 				}
@@ -97,11 +94,41 @@ export default {
       console.log("end");
     },
     loadObj(scene){//路径问题
-      BABYLON.SceneLoader.Append("/static/obj/", "a.obj", scene, function (scene) {
-        console.log("success",scene)
-        // scene.createDefaultCameraOrLight(true, true, true);
-        scene.activeCamera.alpha += Math.PI;
-          // 模型添加成功后，执行场景对象的一些方法
+      // BABYLON.SceneLoader.Append("/static/obj/", "a.obj", scene, function (scene) {
+      //   console.log("success",scene)
+      //   scene.activeCamera.alpha += Math.PI;
+      //     // 模型添加成功后，执行场景对象的一些方法
+      // });
+      BABYLON.SceneLoader.ImportMesh("","/static/obj/", "a.obj",scene,function(newMeshes, particleSystems, skeletons){
+
+        var one= new Array();
+        var two= new Array();
+        var three= new Array();
+
+        var alpha = 0;
+        // for (var j = 0; j < newMeshes.length; j++) {
+        //   one[j] = newMeshes[j].position.x;
+        //   two[j] = newMeshes[j].position.y;
+        //   three[j] = newMeshes[j].position.z;
+        // }
+        // console.log("newMeshes",newMeshes)
+        // scene.registerBeforeRender(function () {
+        //   for (var i = 0; i < newMeshes.length-2; i++) {
+        //     newMeshes[i].position.x = one[i] + 10 * Math.sin(alpha);
+        //     newMeshes[i].position.y  = two[i] + 0;
+        //     newMeshes[i].position.z = three[i] + 10 * Math.cos(alpha);
+        //   }
+        //   alpha += 0.01;
+        // });
+        one[1] = newMeshes[3].position.x;
+        two[1] = newMeshes[3].position.y;
+        three[1] = newMeshes[3].position.z;
+        scene.registerBeforeRender(function () {
+          newMeshes[3].position.x = one[1] + 10 * Math.sin(alpha);
+          newMeshes[3].position.y  = two[1] + 0;
+          newMeshes[3].position.z = three[1] + 10 * Math.cos(alpha);
+          alpha += 0.01;
+        });
       });
     },
     openFlie(){//打开本地文件，返回路径

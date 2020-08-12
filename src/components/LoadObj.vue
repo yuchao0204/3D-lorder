@@ -17,7 +17,7 @@
 
 <script>
 
-import * as Three from 'three'
+import * as Three from 'Three'
 // import OrbitControls from 'three-orbitcontrols'
 // import {OBJLoader} from 'three-obj-mtl-loader'
 // import Stats from 'stats-js'

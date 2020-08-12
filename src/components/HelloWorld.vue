@@ -2,8 +2,11 @@
   <div class="hello">
     <p>{{ msg }}</p>
     <!-- <input type="button" v-on: -->
-    <router-link :to="{name:'babylonjs',params:{msg:msg}}">babylonjs</router-link>
-    <router-link :to="{name:'threejs',params:{msg:msg}}">threejs</router-link>
+    <router-link :to="{name:'babylonjs',params:{msg:'babylonjs'}}">babylonjs demo</router-link>
+    |
+    <router-link :to="{name:'collisions',params:{msg:'collisions'}}">collisions</router-link>
+    |
+    <router-link :to="{name:'threejs',params:{msg:'threejs'}}">threejs demo</router-link>
     <div id="container">
     </div>
     <div id="test" style="margin-top: 5px;">
@@ -20,7 +23,7 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg:"abc",
+      msg:"HomePage",
       camera: null,
       scene: null,
       renderer: null,

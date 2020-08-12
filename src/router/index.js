@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import LoadObj from '@/components/LoadObj'
 import babylonjs from '@/components/babylonjs'
+import collisionsDemo from '@/components/collisionsDemo'
 
 Vue.use(Router)
 
@@ -23,6 +24,11 @@ export default new Router({
       path: '/2',
       name: 'threejs',
       component: LoadObj
+    },
+    {
+      path: '/3',
+      name: 'collisions',
+      component: collisionsDemo
     }
   ]
 })

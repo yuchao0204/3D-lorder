@@ -18,9 +18,10 @@
 <script>
 
 import * as Three from 'Three'
-// import OrbitControls from 'three-orbitcontrols'
-// import {OBJLoader} from 'three-obj-mtl-loader'
+import OrbitControls from 'three-orbitcontrols'
+import {OBJLoader,MTLLoader} from 'three-obj-mtl-loader'
 // import Stats from 'stats-js'
+// import { OBJLoader } from './../jsm/loaders/OBJLoader.js';
 
 export default {
   name: 'LoadObj',
@@ -33,6 +34,7 @@ export default {
         scene: null,
         renderer: null,
         mesh: null,
+        controls:null
     }
   },
   methods: {
@@ -69,26 +71,111 @@ export default {
         this.timer = setInterval(this.updateTime , 60000)
     },
     loadObj:function(){
-        console.log("loadObj")
-        var _loader = new Three.ObjectLoader()
-        _loader.load('/static/obj/a.obj' , obj => {
+      var that = this;
+        let container = document.getElementById('right')
+        if(container.hasChildNodes()){
+          let node = container.childNodes;
+          console.log("node",node);
+          for(let i=0;i<node.length;i++){
+            container.removeChild(node[i]);
+          }
+        }
+				// document.body.appendChild( container );
+        this.camera = new Three.PerspectiveCamera( 45, container.innerWidth / container.innerHeight, 1, 2000 );
+        this.camera.position.z = 250;
+        this.scene = new Three.Scene()
+        this.renderer = new Three.WebGLRenderer({antialias: true})
+        
+        var object;
+
+        // var ambientLight = new Three.AmbientLight( 0xcccccc, 0.4 );
+        // this.scene.add( ambientLight );
+        // var pointLight = new Three.PointLight( 0xffffff, 0.8 );
+				// this.camera.add( pointLight );
+				this.scene.add( this.camera );
+
+        var _loader = new OBJLoader();
+        // new Three.OBJLoader();
+        var file = "/static/obj/male02.obj"
+        _loader.load(file , obj => {
             console.log("obj success",obj);
-            this.scene.add(obj)
+            that.scene.add(obj)
+
+            // that.animate()
         });
+        that.renderer = new Three.WebGLRenderer({antialias: true})
+        that.renderer.setSize(container.clientWidth, container.clientHeight)
+        container.appendChild(this.renderer.domElement)
+
+        console.log("scene",that.scene)
+
+        // container.appendChild(this.renderer.domElement)
     },
     loadStl:function(){
-        console.log("loadStl")
-        var _loader = new Three.STLLoader()
-        _loader.load('/static/obj/3.STL' , obj => {
-            console.log("stl success",obj);
-            this.scene.add(obj)
+      console.log("loadStl")
+      let container = document.getElementById('right')
+      if(container.hasChildNodes()){
+        let node = container.childNodes;
+        console.log("node",node);
+        for(let i=0;i<node.length;i++){
+          container.removeChild(node[i]);
+        }
+      }
+      this.scene = new Three.Scene();
+      this.scene.add(new Three.AmbientLight(0x999999));//环境光
+      this.light = new Three.DirectionalLight(0xdfebff, 0.45);//从正上方（不是位置）照射过来的平行光，0.45的强度
+      this.light.position.set(50, 200, 100);
+      this.light.position.multiplyScalar(0.3);
+      this.scene.add(this.light);
+      //初始化相机
+      this.camera = new Three.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
+      this.camera.position.set(10, 90, 65);
+      this.camera.lookAt(this.scene.position);
+      //初始化控制器
+      // this.controls = new OrbitControls(this.camera);
+      // this.controls.target.set(0, 0, 0);
+      // this.controls.minDistance = 80;
+      // this.controls.maxDistance = 400;
+      // this.controls.maxPolarAngle = Math.PI / 3;
+      // this.controls.update();
+      //渲染
+      this.renderer = new Three.WebGLRenderer({
+        alpha: true,
+      });
+      this.renderer.setClearColor(0x000000);
+      this.renderer.setPixelRatio(container.devicePixelRatio);//为了兼容高清屏幕
+      this.renderer.setSize(container.innerWidth, container.innerHeight);
+      container.appendChild(this.renderer.domElement);
+      this.loadModel();
+      this.animate();
+    },
+    // animate() {
+    //   requestAnimationFrame(this.animate);
+    //   this.render();
+    // },
+    render() {
+      this.renderer.render(this.scene, this.camera);
+    },
+      //外部模型加载函数
+    loadModel() {
+      //包含材质
+      new MTLLoader().setPath('/static/obj/').load('b.mtl', materials => {
+        console.log("materials", materials);
+        materials.preload();
+        new OBJLoader().setMaterials(materials).setPath('/static/obj/').load('a.obj', obj => {
+        console.log("111111111111111111obj", obj);
+          obj.scale.set(30, 30, 30);
+          obj.position.set(0, 0, 0);
+          this.scene.add(obj);
         });
+      });
     }
   },
   mounted( ) {
     this.updateTime()
     this.msg = this.$route.params.msg||"test"
     this.init()
+    // this.loadObj()
     this.animate()
   }
 }

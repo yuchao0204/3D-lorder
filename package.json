@@ -1,5 +1,5 @@
 {
-  "name": "vue_th",
+  "name": "lorder",
   "version": "1.0.0",
   "description": "test",
   "author": "testName",
@@ -13,8 +13,14 @@
   "dependencies": {
     "babylonjs": "^4.1.0",
     "babylonjs-loaders": "^4.1.0",
+    "stats-js": "^1.0.1",
     "three": "^0.119.1",
+    "three-css2drender": "^1.0.0",
+    "three-obj-mtl-loader": "^1.0.3",
+    "three-orbit-controls": "^82.1.0",
+    "three-orbitcontrols": "^2.110.3",
     "vue": "^2.5.2",
+    "vue-cesium": "^2.1.5",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
@@ -72,5 +78,18 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "main": ".eslintrc.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yuchao0204/3D-lorder.git"
+  },
+  "keywords": [
+    "babylon"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yuchao0204/3D-lorder/issues"
+  },
+  "homepage": "https://github.com/yuchao0204/3D-lorder#readme"
 }
